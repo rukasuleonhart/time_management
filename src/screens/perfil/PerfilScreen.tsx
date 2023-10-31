@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, ScrollView } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Line from '../../components/lines/lineMargin';
 import LineMargin from '../../components/lines/lineMargin';

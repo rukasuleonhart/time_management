@@ -1,64 +1,120 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, TextInput, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const TarefasScreen = () => {
+  const [newTask, setNewTask] = useState('');
+  const [tasks, setTasks] = useState([]);
+  const [activeTaskIndex, setActiveTaskIndex] = useState(-1);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
-function TarefasScreen() {
-  
-  const handleOnClick = () => {
-    
-  }
+  // Carregando tarefas do AsyncStorage ao iniciar o aplicativo
+  useEffect(() => {
+    loadTasksFromStorage();
+  }, []);
+
+  // Atualiza o contador a cada segundo quando uma tarefa está ativa
+  useEffect(() => {
+    let interval;
+    if (activeTaskIndex !== -1) {
+      interval = setInterval(() => {
+        setElapsedTime((prevElapsedTime) => prevElapsedTime + 1);
+      }, 1000);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [activeTaskIndex]);
+
+  // Função para carregar tarefas do AsyncStorage
+  const loadTasksFromStorage = async () => {
+    try {
+      const savedTasks = await AsyncStorage.getItem('tasks');
+      if (savedTasks !== null) {
+        setTasks(JSON.parse(savedTasks));
+      }
+    } catch (error) {
+      console.error('Erro ao carregar tarefas do armazenamento:', error);
+    }
+  };
+
+  // Função para salvar tarefas no AsyncStorage
+  const saveTasksToStorage = async () => {
+    try {
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+    } catch (error) {
+      console.error('Erro ao salvar tarefas no armazenamento:', error);
+    }
+  };
+
+  // Função para adicionar uma nova tarefa
+  const addTask = () => {
+    if (newTask.trim() === '') return;
+
+    const newTaskObj = {
+      title: newTask,
+      status: 'pendente', // Status pode ser 'pendente', 'em andamento' ou 'concluída'
+      elapsedTime: 0,
+    };
+
+    setTasks([...tasks, newTaskObj]);
+    saveTasksToStorage();
+    setNewTask('');
+  };
 
   return (
-    <View style={styles.BackgroundPage}>
-      <Text style={styles.text}>Minhas Tarefas</Text>
-      
-    <ScrollView>
-
-      <View style={styles.backgroundTask}>
-        <Text style={{fontSize:20}}>Titulo</Text>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems:"center", width: 120, marginLeft: -290, marginTop: -20}}> 
-            <View style={styles.circlePhoto}></View>
-            <Text style={styles.nameuser}>@name</Text>
-          </View> 
-      </View>
-      
-      <TouchableOpacity>
-        <View style={styles.backgroundTask}>
-          <Text>Adicionar nova tarefa</Text>
-        </View>
-      </TouchableOpacity>
-
-      </ScrollView>
+    <View>
+      <Text>Minhas Tarefas</Text>
+      <TextInput
+        placeholder="Nova tarefa"
+        value={newTask}
+        onChangeText={setNewTask}
+      />
+      <Button title="Adicionar Tarefa" onPress={addTask} />
+<FlatList
+  data={tasks}
+  keyExtractor={(item, index) => index.toString()}
+  renderItem={({ item, index }) => (
+    <View>
+      <Text>{item.title} - {item.status}</Text>
+      <Text>Tempo decorrido: {item.status === 'em andamento' ? item.elapsedTime + elapsedTime : item.elapsedTime} segundos</Text>
+      <Button
+        title="Play"
+        onPress={() => {
+          // Lógica para iniciar tarefa (em andamento)
+          tasks[index].status = 'em andamento';
+          setActiveTaskIndex(index);
+          saveTasksToStorage();
+        }}
+      />
+      <Button
+        title="Pausar"
+        onPress={() => {
+          // Lógica para pausar tarefa
+          if (item.status === 'em andamento') {
+            item.elapsedTime += elapsedTime;
+          }
+          tasks[index].status = 'pendente';
+          setActiveTaskIndex(-1);
+          saveTasksToStorage();
+        }}
+      />
+  
+      <Button
+        title="Excluir"
+        onPress={() => {
+          // Lógica para excluir tarefa
+          const updatedTasks = [...tasks];
+          updatedTasks.splice(index, 1);
+          setTasks(updatedTasks);
+          saveTasksToStorage();
+        }}
+      />
+    </View>
+  )}
+/>
     </View>
   );
-}
-const styles = StyleSheet.create({
-  BackgroundPage:{
-    backgroundColor:"#2C3E50", 
-    flex:1, 
-  },
-  text: {
-    color:"#fff",
-    marginTop: 5,
-    marginHorizontal: 10,
-    fontSize: 16,
-  },
-  backgroundTask: {
-    alignItems:"center",
-    backgroundColor:"#fff",
-    height: 120,
-    marginHorizontal: 10,
-    borderRadius: 5,
-    margin: 5,
-    justifyContent:"center",
-  },
-  circlePhoto: {
-    backgroundColor:"#fab1a0",
-    width: 90,
-    height: 90,
-    borderRadius: 100,
-  },
-  nameuser: {
-  }
-})
+};
+
 export default TarefasScreen;

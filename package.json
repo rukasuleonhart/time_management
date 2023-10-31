@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
+    "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-navigation/bottom-tabs": "^6.5.8",
-    "@react-navigation/native": "^5.9.2",
+    "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.17",
     "all": "^0.0.0",
     "dependencies": "^0.0.1",
@@ -27,7 +28,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
     "the": "^1.0.2",
-    "your": "^0.2.3"
+    "your": "^0.2.3",
+    "expo-camera": "~13.4.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
