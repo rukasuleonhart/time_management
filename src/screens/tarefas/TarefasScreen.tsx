@@ -1,8 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
 
 function TarefasScreen() {
+  
+  const handleOnClick = () => {
+    
+  }
+
   return (
     <View style={styles.BackgroundPage}>
       <Text style={styles.text}>Minhas Tarefas</Text>
@@ -17,53 +22,11 @@ function TarefasScreen() {
           </View> 
       </View>
       
-      <View style={styles.backgroundTask}>
-        <Text style={{fontSize:20}}>Titulo</Text>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems:"center", width: 120, marginLeft: -290, marginTop: -20}}> 
-            <View style={styles.circlePhoto}></View>
-            <Text style={styles.nameuser}>@name</Text>
-          </View> 
-      </View>
-
-      <View style={styles.backgroundTask}>
-        <Text style={{fontSize:20}}>Titulo</Text>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems:"center", width: 120, marginLeft: -290, marginTop: -20}}> 
-            <View style={styles.circlePhoto}></View>
-            <Text style={styles.nameuser}>@name</Text>
-          </View> 
-      </View>
-
-      <View style={styles.backgroundTask}>
-        <Text style={{fontSize:20}}>Titulo</Text>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems:"center", width: 120, marginLeft: -290, marginTop: -20}}> 
-            <View style={styles.circlePhoto}></View>
-            <Text style={styles.nameuser}>@name</Text>
-          </View> 
-      </View>
-
-      <View style={styles.backgroundTask}>
-        <Text style={{fontSize:20}}>Titulo</Text>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems:"center", width: 120, marginLeft: -290, marginTop: -20}}> 
-            <View style={styles.circlePhoto}></View>
-            <Text style={styles.nameuser}>@name</Text>
-          </View> 
-      </View>
-
-      <View style={styles.backgroundTask}>
-        <Text style={{fontSize:20}}>Titulo</Text>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems:"center", width: 120, marginLeft: -290, marginTop: -20}}> 
-            <View style={styles.circlePhoto}></View>
-            <Text style={styles.nameuser}>@name</Text>
-          </View> 
-      </View>
-
-      <View style={styles.backgroundTask}>
-        <Text style={{fontSize:20}}>Titulo</Text>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems:"center", width: 120, marginLeft: -290, marginTop: -20}}> 
-            <View style={styles.circlePhoto}></View>
-            <Text style={styles.nameuser}>@name</Text>
-          </View> 
-      </View>
+      <TouchableOpacity>
+        <View style={styles.backgroundTask}>
+          <Text>Adicionar nova tarefa</Text>
+        </View>
+      </TouchableOpacity>
 
       </ScrollView>
     </View>
@@ -72,7 +35,7 @@ function TarefasScreen() {
 const styles = StyleSheet.create({
   BackgroundPage:{
     backgroundColor:"#2C3E50", 
-    flex:1
+    flex:1, 
   },
   text: {
     color:"#fff",
@@ -87,7 +50,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 5,
     margin: 5,
-
     justifyContent:"center",
   },
   circlePhoto: {
